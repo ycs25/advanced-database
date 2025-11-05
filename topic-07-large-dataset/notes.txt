@@ -1,0 +1,32 @@
+
+Datasets:
+
+https://developer.imdb.com/non-commercial-datasets/
+
+Data files:
+
+https://datasets.imdbws.com/
+
+Get the files:
+
+$ wget https://datasets.imdbws.com/title.basics.tsv.gz
+
+Unzip the file with "gunzip"
+
+$ gunzip title.basics.tsv.gz
+
+Check out the results:
+
+$ ls -lah
+
+Get the numeric packages
+
+$ pip install pandas
+
+Get Chinook
+
+https://github.com/lerocha/chinook-database/tree/master/ChinookDatabase
+
+
+
+

@@ -1,0 +1,23 @@
+<html>
+    <head></head>
+    <body>
+        This is the create template. 
+        <form action="/create" method="post">
+            <hr/>
+            <p>Animal Name:<input name="name"/></p>
+            <p>Age:<input name="age"/></p>
+
+            <p>Kind_ID:<select name="kind_id">
+                {% for kind in kinds %}
+                <option value="{{kind['id']}}">{{kind['name']}}</option>
+                {% endfor %}
+            </select></p>
+
+            <p>Owner:<input name="owner"/></p>
+            <hr/>
+            <button type="submit">Create</button>
+            <a href="/list">Cancel</a>
+            <hr/>
+        </form>
+    </body>
+</html>

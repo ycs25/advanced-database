@@ -1,0 +1,10 @@
+<html>
+    <h1>Hello {{ prof["title"] }} {{ prof["name"] }}!</h1>
+    <table>
+        {% for item in data %}
+        <tr>
+            <td>{{ item["name"] }}</td><td>{{ item["age"] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</html>

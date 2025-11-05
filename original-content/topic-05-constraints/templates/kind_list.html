@@ -1,0 +1,22 @@
+<html>
+    <h3>Kind List:</h3>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Food</th>
+            <th>Sound</th>
+        </tr>
+        {% for kind in kinds %}
+        <tr>
+            {% for key in kind.keys() %}
+            <td>{{ kind[key] }}</td>
+            {% endfor %}
+            <td><a href="/kind/delete/{{kind['id']}}">Delete</a></td>
+            <td><a href="/kind/update/{{kind['id']}}">Update</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+    <hr/>
+    <a href="/kind/create">Create New Kind</a>
+</html>
