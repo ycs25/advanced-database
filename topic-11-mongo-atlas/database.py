@@ -1,7 +1,20 @@
-from mongita import MongitaClientDisk
+import os
+from dotenv import load_dotenv
+from pymongo import MongoClient
+from pymongo.server_api import ServerApi
 from bson.objectid import ObjectId
 
-client = MongitaClientDisk()
+load_dotenv()
+connection_string = os.environ.get("MONGO_URI")
+
+client = MongoClient(connection_string, server_api=ServerApi('1'))
+
+try:
+    client.admin.command('ping')
+    print("Ping... Successfully linked to MongoDB Atlas!")
+except Exception as e:
+    print(f"Connection Failed: {e}")
+
 pets_db = client.pets_db
 
 # PETS
