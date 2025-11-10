@@ -43,7 +43,8 @@ def get_delete(id):
 @app.route("/update/<id>", methods=["GET"])
 def get_update(id):
     data = database.get_pet(id)
-    return render_template("update.html",data=data)
+    kinds = database.get_kinds()
+    return render_template("update.html",data=data, kinds=kinds)
 
 @app.route("/update/<id>", methods=["POST"])
 def post_update(id):

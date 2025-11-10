@@ -6,7 +6,13 @@
             <hr/>
             <p>Animal Name:<input name="name" value="{{data['name']}}"/></p>
             <p>Age:<input name="age" value="{{data['age']}}"/></p>
-            <p>Type:<input name="type" value="{{data['type']}}"/></p>
+
+            <p>Kind_ID:<select name="kind_id">
+                {% for kind in kinds %}
+                <option value="{{kind['id']}}">{{kind['name']}}</option>
+                {% endfor %}
+            </select></p>
+
             <p>Owner:<input name="owner" value="{{data['owner']}}"/></p>
             <hr/>
             <button type="submit">Update</button>

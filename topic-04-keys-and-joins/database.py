@@ -13,7 +13,7 @@ def initialize(database_file):
 def get_pets():
     cursor = connection.cursor()
     cursor.execute("""
-        SELECT pet.id, pet.name, pet.age, pet.owner, kind.name as kind_name, kind.food, kind.sound 
+        SELECT pet.id, pet.name, kind.name as kind_name, pet.age, pet.owner,  kind.food, kind.sound 
         FROM pet 
         JOIN kind ON pet.kind_id = kind.id
     """)
@@ -37,7 +37,7 @@ def get_pet(id):
     cursor.execute(f"""select * from pet where id = ?""", (id,))
     rows = cursor.fetchall()
     try:
-        (id, name, xtype, age, owner) = rows[0]
+        (id, name, kind, age, owner) = rows[0]
         data = {"id": id, "name": name, "kind": kind, "age": age, "owner": owner}
 
         return data
@@ -87,8 +87,8 @@ def update_pet(id, data):
         data["age"] = 0
     cursor = connection.cursor()
     cursor.execute(
-        """update pet set name=?, age=?, type=?, owner=? where id=?""",
-        (data["name"], data["age"], data["type"], data["owner"], id),
+        """update pet set name=?, age=?, kind_id=?, owner=? where id=?""",
+        (data["name"], data["age"], data["kind_id"], data["owner"], id),
     )
     connection.commit()
 
