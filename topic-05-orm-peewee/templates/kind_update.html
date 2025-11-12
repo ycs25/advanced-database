@@ -2,11 +2,11 @@
     <head></head>
     <body>
         This is the update template. 
-        <form action="/kind/update/{{data['id']}}" method="post">
+        <form action="/kind/update/{{data.id}}" method="post">
             <hr/>
-            <p>Kind Name:<input name="name" value="{{data['name']}}"/></p>
-            <p>Food:<input name="food" value="{{data['food']}}"/></p>
-            <p>Sound:<input name="sound" value="{{data['sound']}}"/></p>
+            <p>Kind Name:<input name="name" value="{{data.kind_name}}"/></p>
+            <p>Food:<input name="food" value="{{data.food}}"/></p>
+            <p>Sound:<input name="noise" value="{{data.noise}}"/></p>
             <hr/>
             <hr/>
             <button type="submit">Update</button>

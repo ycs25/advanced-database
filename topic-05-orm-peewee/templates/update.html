@@ -2,12 +2,22 @@
     <head></head>
     <body>
         This is the update template. 
-        <form action="/update/{{data['id']}}" method="post">
+        <form action="/update/{{data.id}}" method="post">
             <hr/>
-            <p>Animal Name:<input name="name" value="{{data['name']}}"/></p>
-            <p>Age:<input name="age" value="{{data['age']}}"/></p>
-            <p>Type:<input name="type" value="{{data['type']}}"/></p>
-            <p>Owner:<input name="owner" value="{{data['owner']}}"/></p>
+            <p>Animal Name:<input name="name" value="{{data.name}}"/></p>
+            <p>Age:<input name="age" value="{{data.age}}"/></p>
+
+            <p>Kind_ID:<select name="kind_id">
+                {% for kind in kinds %}
+                    {% if kind.id == data.kind.id %}
+                        <option value="{{kind.id}}" selected>{{kind.kind_name}}</option>
+                    {% else %}
+                        <option value="{{kind.id}}">{{kind.kind_name}}</option>
+                    {% endif %}
+                {% endfor %}
+            </select></p>
+
+            <p>Owner:<input name="owner" value="{{data.owner}}"/></p>
             <hr/>
             <button type="submit">Update</button>
             <a href="/list">Cancel</a>

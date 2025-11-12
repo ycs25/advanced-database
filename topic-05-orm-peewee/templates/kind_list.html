@@ -9,14 +9,17 @@
         </tr>
         {% for kind in kinds %}
         <tr>
-            {% for key in kind.keys() %}
-            <td>{{ kind[key] }}</td>
-            {% endfor %}
-            <td><a href="/kind/delete/{{kind['id']}}">Delete</a></td>
-            <td><a href="/kind/update/{{kind['id']}}">Update</a></td>
+            <td>{{ kind.id }}</td>
+            <td>{{ kind.kind_name }}</td>
+            <td>{{ kind.food }}</td>
+            <td>{{ kind.noise }}</td>
+            <td><a href="/kind/delete/{{kind.id}}">Delete</a></td>
+            <td><a href="/kind/update/{{kind.id}}">Update</a></td>
         </tr>
         {% endfor %}
     </table>
     <hr/>
     <a href="/kind/create">Create New Kind</a>
+    <hr/>
+    <a href="/list">Pet List</a>
 </html>

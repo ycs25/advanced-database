@@ -4,17 +4,23 @@
         <tr>
             <th>ID</th>
             <th>Name</th>
-            <th>Type</th>
+            <th>Kind</th>
             <th>Age</th>
             <th>Owner</th>
+            <th>Food</th>
+            <th>Sound</th>
         </tr>
         {% for pet in pets %}
         <tr>
-            {% for key in pet.keys() %}
-            <td>{{ pet[key] }}</td>
-            {% endfor %}
-            <td><a href="/delete/{{pet['id']}}">Delete</a></td>
-            <td><a href="/update/{{pet['id']}}">Update</a></td>
+            <td>{{ pet.id }}</td>
+            <td>{{ pet.name }}</td>
+            <td>{{ pet.kind.kind_name}}</td>
+            <td>{{ pet.age }}</td>
+            <td>{{ pet.owner }}</td>
+            <td>{{ pet.kind.food}}</td>
+            <td>{{ pet.kind.noise}}</td>            
+            <td><a href="/delete/{{pet.id}}">Delete</a></td>
+            <td><a href="/update/{{pet.id}}">Update</a></td>
         </tr>
         {% endfor %}
     </table>

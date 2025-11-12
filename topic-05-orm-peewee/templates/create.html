@@ -9,7 +9,7 @@
 
             <p>Kind_ID:<select name="kind_id">
                 {% for kind in kinds %}
-                <option value="{{kind['id']}}">{{kind['name']}}</option>
+                <option value="{{kind.id}}">{{kind.kind_name}}</option>
                 {% endfor %}
             </select></p>
 
