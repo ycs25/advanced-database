@@ -1,7 +1,19 @@
-from mongita import MongitaClientDisk
+import pymongo
 from bson.objectid import ObjectId
+import sys
 
-client = MongitaClientDisk()
+# client = MongitaClientDisk()
+try:
+  client = pymongo.MongoClient("mongodb+srv://supervisor:supervisor123@cluster0.agji2kq.mongodb.net/?appName=Cluster0")
+  
+# return a friendly error if a URI error is thrown 
+except pymongo.errors.ConfigurationError:
+  print("An Invalid URI host error was received. Is your Atlas host name correct in your connection string?")
+  sys.exit(1)
+
+
+
+
 pets_db = client.pets_db
 
 # PETS

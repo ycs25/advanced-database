@@ -1,0 +1,9 @@
+Aggregation link:
+
+https://www.mongodb.com/docs/manual/reference/method/db.collection.aggregate/#db.collection.aggregate
+
+Mongo Slides:
+
+https://docs.google.com/presentation/d/1J2H9zb8Qv037jpm-cKUkTggQnQbNWwSUBQ56C7cvaJY/edit?slide=id.g193b52de9a_0_134#slide=id.g193b52de9a_0_134
+
+
