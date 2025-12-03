@@ -19,27 +19,63 @@ pets_db = client.pets_db
 
 # PETS
 
+# def retrieve_pets():
+#     pets_collection = pets_db.pets_collection
+#     kind_collection = pets_db.kind_collection
+#     pets = list(pets_collection.find())
+#     for pet in pets:
+#         pet["id"] = str(pet["_id"])
+#         del pet["_id"]
+#         kind = kind_collection.find_one({"_id": pet["kind_id"]})
+#         for tag in ["kind_name", "noise", "food"]:
+#             pet[tag] = kind[tag]
+#         del pet["kind_id"]
+#     return pets
+
 def retrieve_pets():
     pets_collection = pets_db.pets_collection
-    kind_collection = pets_db.kind_collection
-    pets = list(pets_collection.find())
-    for pet in pets:
-        pet["id"] = str(pet["_id"])
-        del pet["_id"]
-        kind = kind_collection.find_one({"_id": pet["kind_id"]})
-        for tag in ["kind_name", "noise", "food"]:
-            pet[tag] = kind[tag]
-        del pet["kind_id"]
-    return pets
+    
+    pipeline = [
+        {
+            "$lookup": {
+                "from": "kind_collection",
+                "localField": "kind_id",
+                "foreignField": "_id",
+                "as": "kind_details"
+            }
+        },
 
+        {
+            "$unwind": "$kind_details"
+        },
+
+        {
+            "$project": {
+                "_id":0,
+                "id": {"$toString": "$_id"},
+                "name": 1,
+                "age": 1,
+                "owner": 1,
+
+                "kind_name": "$kind_details.kind_name",
+                "noise": "$kind_details.noise",
+                "food": "$kind_details.food"
+            }
+        }
+    ]
+
+    result = list(pets_collection.aggregate(pipeline))
+    return result
 
 def test_retrieve_pets():
     print("test retrieve_pets")
     pets = retrieve_pets()
     assert type(pets) is list
+    print(pets)
     assert type(pets[0]) is dict
     assert type(pets[0]["id"]) is str
     pets[0]["id"] = "1"
+    print(pets[0])
     assert pets[0] == {
         "id": "1",
         "name": "Suzy",
@@ -50,7 +86,6 @@ def test_retrieve_pets():
         "noise": "Bark",
     }
 
-
 def retrieve_pet(id):
     pets_collection = pets_db.pets_collection
     id = ObjectId(id)
@@ -58,6 +93,30 @@ def retrieve_pet(id):
     pet["id"] = str(pet["_id"])
     del pet["_id"]
     return pet
+
+def retrieve_pet_2(pet_id):
+    pets_collection = pets_db.pets_collection
+    oid = ObjectId(pet_id)
+    
+    pipeline = [
+        { "$match": { "_id": oid } }, 
+        
+        { "$lookup": { "from": "kind_collection", "localField": "kind_id", "foreignField": "_id", "as": "kind_details" } },
+        { "$unwind": "$kind_details" },
+        { "$project": {
+            "_id": 0,
+            "id": { "$toString": "$_id" },
+            "name": 1,
+            "age": 1,
+            "kind_name": "$kind_details.kind_name",
+            "noise": "$kind_details.noise",
+            "food": "$kind_details.food"
+        }}
+    ]
+    try:
+        return next(pets_collection.aggregate(pipeline), None)
+    except StopIteration:
+        return None
 
 
 def test_retrieve_pet():
@@ -108,6 +167,35 @@ def test_create_and_delete_pet():
             found = True
     assert not found
 
+def test_create_and_delete_pet_2():
+    print("test create_and_delete_pet")
+    pets_collection = pets_db.pets_collection
+    kind_collection = pets_db.kind_collection
+    kind = kind_collection.find_one({"kind_name": "Dog"})
+    if not kind:
+        print("Error: 'Dog' kind not found in DB") 
+        return
+
+    example_kind_id = str(kind["_id"])
+    data = {"name": "test_name", "age": 999, "kind_id": example_kind_id, "owner": "test_owner"}
+    created_id = None
+
+    try:
+        create_pet(data)
+        test_pet = pets_collection.find_one({"name": "test_name"})
+        assert test_pet is not None
+        created_id = str(test_pet["_id"])
+        assert test_pet["age"] == 999
+        assert test_pet["owner"] == "test_owner"
+        assert str(test_pet["kind_id"]) == example_kind_id
+        
+        delete_pet(created_id)
+        deleted_pet = pets_collection.find_one({"_id": test_pet["_id"]})
+        assert deleted_pet is None
+
+    finally:
+        if created_id:
+            pets_collection.delete_one({"_id": ObjectId(created_id)})
 
 def update_pet(id, data):
     pets_collection = pets_db.pets_collection
@@ -167,6 +255,11 @@ def create_kind(data):
 
 def delete_kind(id):
     kind_collection = pets_db.kind_collection
+    pets_collection = pets_db.pets_collection
+    pets_with_kind = pets_collection.find({"kind_id": ObjectId(id)})
+    if list(pets_with_kind):
+        return "Cannot delete kind: pets still reference it"
+
     kind_collection.delete_one({"_id": ObjectId(id)})
 
 
