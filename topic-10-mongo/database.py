@@ -32,6 +32,7 @@ def test_retrieve_pets():
         "name": "Suzy",
         "age": 3,
         "owner": "Greg",
+        "color": "brown",
         "kind_name": "Dog",
         "food": "Dog food",
         "noise": "Bark",
@@ -53,7 +54,7 @@ def test_retrieve_pet():
     id = pets[0]["id"]
     pet = retrieve_pet(id)
     del pet["kind_id"]
-    assert pet == {"id": id, "name": "Suzy", "age": 3, "owner": "Greg"}
+    assert pet == {"id": id, "name": "Suzy", "age": 3, "owner": "Greg", "color": "brown"}
 
 
 def create_pet(data):
@@ -76,12 +77,12 @@ def test_create_and_delete_pet():
     for pet in pets:
         if pet["name"] == "gamma":
             delete_pet(pet["id"])
-    data = {"name": "gamma", "age": 12, "kind_id": example_kind_id, "owner": "delta"}
+    data = {"name": "gamma", "age": 12, "kind_id": example_kind_id, "owner": "delta", "color": "red"}
     create_pet(data)
     pets = retrieve_pets()
     found = False
     for pet in pets:
-        if pet["name"] == "gamma" and pet["owner"] == "delta":
+        if pet["name"] == "gamma" and pet["owner"] == "delta" and pet["color"] == "red":
             assert pet["age"] == 12
             assert pet["kind_name"] == "Dog"
             found = True
@@ -91,7 +92,7 @@ def test_create_and_delete_pet():
     pets = retrieve_pets()
     found = False
     for pet in pets:
-        if pet["name"] == "gamma" and pet["owner"] == "delta":
+        if pet["name"] == "gamma" and pet["owner"] == "delta" and pet["color"] == "red":
             found = True
     assert not found
 
@@ -111,19 +112,21 @@ def test_update_pet():
 
     # modify the record with the same kind_id
     kind_id = pet_saved["kind_id"]
-    data = {"name": "gamma", "age": 12, "kind_id": kind_id, "owner": "delta"}
+    data = {"name": "gamma", "age": 12, "kind_id": kind_id, "owner": "delta", "color": "read"}
     update_pet(id, data)
 
     # check that the update happened
     pet = retrieve_pet(id)
     assert pet["name"] == "gamma"
     assert pet["owner"] == "delta"
+    assert pet["color"] == "red"
 
     # restore the original data and verify
     update_pet(id, pet_saved)
     pet = retrieve_pet(id)
     assert pet["name"] == "Suzy"
     assert pet["owner"] == "Greg"
+    assert pet["color"] == "brown"
 
 
 # KINDS

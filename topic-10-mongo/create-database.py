@@ -21,10 +21,10 @@ def create_database():
     pets_db.drop_collection("pets_collection")
     pets_collection = pets_db.pets_collection
     pets = [
-        {"name": "Suzy", "age": 3, "kind_name": "Dog", "owner": "Greg"},
-        {"name": "Sandy", "age": 2, "kind_name": "Cat", "owner": "Steve"},
-        {"name": "Dorothy", "age": 1, "kind_name": "Dog", "owner": "Elizabeth"},
-        {"name": "Heidi", "age": 4, "kind_name": "Dog", "owner": "David"},
+        {"name": "Suzy", "age": 3, "kind_name": "Dog", "owner": "Greg", "color": "brown"},
+        {"name": "Sandy", "age": 2, "kind_name": "Cat", "owner": "Steve", "color": "black"},
+        {"name": "Dorothy", "age": 1, "kind_name": "Dog", "owner": "Elizabeth", "color": "yellow"},
+        {"name": "Heidi", "age": 4, "kind_name": "Dog", "owner": "David", "color": "white"}
     ]
     for pet in pets:
         for kind in kinds:
